@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenShell's Label Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
+            background: #3a2e28;
+            background-image: linear-gradient(45deg, #2a201a 2%, #3a2e28 2%, #3a2e28 50%, #2a201a 50%, #2a201a 52%, #3a2e28 52%, #3a2e28 100%);
+            background-size: 60px 60px;
+            padding: 40px 20px;
+            min-height: 100vh;
+            animation: pageFadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes pageFadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #f4e8d1;
+            background-image: repeating-linear-gradient(45deg, rgba(200,180,140,0.1) 0px, rgba(200,180,140,0.1) 2px, transparent 2px, transparent 8px);
+            border-radius: 4px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,200,0.3), inset 0 0 0 8px #8b7355, inset 0 0 0 10px #d4c5a9;
+            padding: 40px;
+            position: relative;
+            animation: containerRise 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) 0.15s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes containerRise {
+            0% { opacity: 0; transform: scale(0.96) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .container::before {
+            content: "✧";
+            position: absolute;
+            top: 18px;
+            left: 25px;
+            font-size: 24px;
+            color: #8b7355;
+            opacity: 0.5;
+            font-family: serif;
+        }
+        
+        .container::after {
+            content: "✧";
+            position: absolute;
+            bottom: 18px;
+            right: 25px;
+            font-size: 24px;
+            color: #8b7355;
+            opacity: 0.5;
+            font-family: serif;
+        }
+        
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #c4a66a;
+            padding-bottom: 20px;
+            position: relative;
+        }
+        
+        .museum-badge {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: rgba(196,166,106,0.2);
+            padding: 5px 18px;
+            border-radius: 30px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            color: #5c3d2e;
+        }
+        
+        h1 {
+            font-size: 38px;
+            color: #2a2418;
+            margin-bottom: 10px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6b5a4a;
+            font-style: italic;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        
+        /* ---- 搜索和筛选区域 ---- */
+        .filter-section {
+            margin: 20px 0 30px;
+            padding: 18px 20px;
+            background: rgba(255, 248, 237, 0.7);
+            border: 1px solid #d4c5a9;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px 20px;
+        }
+        
+        .filter-section .search-box {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fffcf5;
+            border: 1px solid #d4c5a9;
+            border-radius: 30px;
+            padding: 6px 16px 6px 20px;
+            transition: border-color 0.3s;
+        }
+        
+        .filter-section .search-box:focus-within {
+            border-color: #b8935a;
+            box-shadow: 0 0 0 3px rgba(196,166,106,0.2);
+        }
+        
+        .filter-section .search-box input {
+            border: none;
+            background: transparent;
+            padding: 8px 0;
+            font-size: 14px;
+            font-family: 'Georgia', serif;
+            color: #3a2e28;
+            width: 100%;
+            outline: none;
+        }
+        
+        .filter-section .search-box input::placeholder {
+            color: #b0a090;
+            font-style: italic;
+        }
+        
+        .filter-section .search-box .search-icon {
+            font-size: 16px;
+            color: #b0a090;
+        }
+        
+        .filter-section .search-box .clear-btn {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #b0a090;
+            cursor: pointer;
+            padding: 0 4px;
+            display: none;
+            transition: color 0.2s;
+        }
+        
+        .filter-section .search-box .clear-btn:hover {
+            color: #5c3d2e;
+        }
+        
+        .filter-section .search-box .clear-btn.visible {
+            display: block;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        
+        .filter-buttons .filter-label {
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            color: #8b7a64;
+            letter-spacing: 1px;
+            margin-right: 4px;
+        }
+        
+        .filter-btn {
+            padding: 4px 14px;
+            border: 1.5px solid #d4c5a9;
+            border-radius: 20px;
+            background: transparent;
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            color: #6b5a4a;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .filter-btn:hover {
+            background: #d4c5a9;
+            color: #2a2418;
+        }
+        
+        .filter-btn.active {
+            background: #c4a66a;
+            border-color: #c4a66a;
+            color: #f4e8d1;
+        }
+        
+        .filter-btn.reset-btn {
+            border-color: #b0a090;
+            color: #8b7a64;
+        }
+        
+        .filter-btn.reset-btn:hover {
+            background: #b0a090;
+            color: #fffcf5;
+        }
+        
+        .filter-count {
+            font-size: 12px;
+            color: #8b7a64;
+            font-family: 'Courier New', monospace;
+            margin-left: auto;
+            padding: 4px 12px;
+            background: rgba(196,166,106,0.15);
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+        
+        /* ---- 网格布局 ---- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+            min-height: 400px;
+        }
+        
+        .grid .card {
+            background: #fef8ed;
+            border: 1px solid #d4c5a9;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .grid .card.visible {
+            animation: cardFadeUp 0.5s ease-out forwards;
+        }
+        
+        .grid .card.hidden {
+            display: none;
+        }
+        
+        @keyframes cardFadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .grid .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            border-color: #b8935a;
+        }
+        
+        /* 图片区域 */
+        .card-image-wrapper {
+            background: #e8dcc8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 3px solid #c4a66a;
+            min-height: 220px;
+            max-height: 280px;
+        }
+        
+        .card-img {
+            width: 100%;
+            height: auto;
+            max-height: 280px;
+            object-fit: contain;
+            transition: transform 0.5s ease, filter 0.3s ease, opacity 0.5s ease;
+            filter: sepia(0.15);
+            display: block;
+            opacity: 0;
+        }
+        
+        .card-img.loaded {
+            opacity: 1;
+        }
+        
+        .card:hover .card-img.loaded {
+            transform: scale(1.02);
+            filter: sepia(0);
+        }
+        
+        .card-img-placeholder {
+            width: 100%;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #d4c5a9, #e8dcc8);
+            color: #8b7a64;
+        }
+        
+        .placeholder-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+        
+        .placeholder-text {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+        
+        .card-content {
+            padding: 22px 20px 20px;
+            background: #fef8ed;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #5c3d2e;
+            margin-bottom: 6px;
+            font-family: 'Georgia', serif;
+            border-left: 3px solid #c4a66a;
+            padding-left: 12px;
+        }
+        
+        .card-common {
+            font-size: 14px;
+            color: #8b7a64;
+            margin-bottom: 12px;
+            font-style: italic;
+            padding-left: 15px;
+        }
+        
+        .card-number {
+            font-size: 10px;
+            font-family: 'Courier New', monospace;
+            color: #a89880;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            background: rgba(196,166,106,0.15);
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            align-self: flex-start;
+        }
+        
+        .card-info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #6b5a4a;
+            line-height: 1.5;
+        }
+        
+        .card-info-icon {
+            font-size: 14px;
+            min-width: 22px;
+            color: #c4a66a;
+        }
+        
+        .card-info-text {
+            flex: 1;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dotted #d4c5a9;
+        }
+        
+        .iucn-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+            transition: transform 0.2s;
+        }
+        
+        .iucn-tag:hover {
+            transform: scale(1.05);
+        }
+        
+        .iucn-CR { background: #8b3a3a; color: #f4e8d1; }
+        .iucn-EN { background: #b8652e; color: #f4e8d1; }
+        .iucn-VU { background: #c9a03d; color: #2a2418; }
+        .iucn-NT { background: #7a6b5d; color: #f4e8d1; }
+        .iucn-LC { background: #4a6b3a; color: #f4e8d1; }
+        .iucn-DD { background: #5a6b7a; color: #f4e8d1; }
+        
+        .btn {
+            display: inline-block;
+            padding: 6px 16px;
+            background: transparent;
+            color: #5c3d2e;
+            text-decoration: none;
+            border: 1.5px solid #c4a66a;
+            border-radius: 30px;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #c4a66a;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn:hover {
+            color: #f4e8d1;
+            border-color: #c4a66a;
+        }
+        
+        .btn:hover::before {
+            left: 0;
+        }
+        
+        /* ---- 分页 ---- */
+        .pagination-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px solid #c4a66a;
+            flex-wrap: wrap;
+        }
+        
+        .pagination-section .page-btn {
+            padding: 8px 16px;
+            border: 1.5px solid #d4c5a9;
+            border-radius: 6px;
+            background: transparent;
+            color: #6b5a4a;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .pagination-section .page-btn:hover:not(.disabled):not(.active) {
+            background: #d4c5a9;
+            color: #2a2418;
+        }
+        
+        .pagination-section .page-btn.active {
+            background: #c4a66a;
+            border-color: #c4a66a;
+            color: #f4e8d1;
+        }
+        
+        .pagination-section .page-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .pagination-section .page-info {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #8b7a64;
+            padding: 0 12px;
+        }
+        
+        .stats {
+            text-align: center;
+            margin: 30px 0 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #8b7a64;
+            letter-spacing: 1px;
+        }
+        
+        .ornament-divider {
+            text-align: center;
+            margin: 30px 0 0;
+            color: #c4a66a;
+            font-size: 14px;
+            letter-spacing: 5px;
+        }
+        
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+            color: #8b7a64;
+            font-style: italic;
+            font-size: 18px;
+            grid-column: 1 / -1;
+        }
+        
+        .no-results.visible {
+            display: block;
+        }
+        
+        .no-results span {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        
+        /* 加载动画 */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: #8b7a64;
+            grid-column: 1 / -1;
+        }
+        
+        .loading-spinner.visible {
+            display: block;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #d4c5a9;
+            border-radius: 50%;
+            border-top-color: #c4a66a;
+            animation: spin 0.8s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 响应式 */
+        @media (max-width: 800px) {
+            .container { padding: 25px; }
+            .grid { grid-template-columns: 1fr; gap: 25px; }
+            h1 { font-size: 28px; }
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-section .filter-count {
+                margin-left: 0;
+                text-align: center;
+            }
+            .filter-buttons {
+                justify-content: center;
+            }
+            .pagination-section .page-btn {
+                padding: 6px 12px;
+                font-size: 11px;
+                min-width: 32px;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .card-footer {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+            .btn {
+                text-align: center;
+            }
+            .filter-buttons .filter-label {
+                display: none;
+            }
+            .pagination-section .page-btn {
+                padding: 4px 8px;
+                font-size: 10px;
+                min-width: 28px;
+            }
+            .pagination-section .page-info {
+                font-size: 10px;
+                padding: 0 6px;
+            }
+        }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; border: 1px solid #ccc; }
+            .btn { display: none; }
+            .card { break-inside: avoid; }
+            .filter-section { display: none; }
+            .pagination-section { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <div class="museum-badge">✦ DIGITAL COLLECTION CATALOGUE ✦</div>
+            <h1>🏛️ OpenShell's Label Online</h1>
+            <div class="subtitle">WELCOME</div>
+        </div>
+        
+        <!-- 搜索和筛选区域 -->
+        <div class="filter-section" id="filterSection">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search by name, location, ID..." autocomplete="off">
+                <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
+            </div>
+            <div class="filter-buttons">
+                <span class="filter-label">IUCN:</span>
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="Data Deficient (DD)">Data Deficient (DD)</button><button class="filter-btn" data-filter="Extinct (EX)">Extinct (EX)</button><button class="filter-btn" data-filter="None">None</button>
+                <button class="filter-btn reset-btn" id="resetFilters">↺ Reset</button>
+            </div>
+            <span class="filter-count" id="filterCount">Showing 27 specimens</span>
+        </div>
+        
+        <div class="grid" id="cardGrid">
+            
+        <div class="card" data-id="PCY100" data-scientific="paraprososthenia sp" data-common="p. sp" data-location="ciying town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/762e3435c508808bb37b6caaed49442f_20260615_182849.jpg" alt="Paraprososthenia sp" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Paraprososthenia sp</i></div>
+                <div class="card-common">P. sp</div>
+                <div class="card-number">Accession № PCY100</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ciying Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="PCY100.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="PCY101" data-scientific="lacunopsis sp" data-common="l. sp" data-location="ciying town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/b7fd2b44ed7a334ccbd88dddb7c88ade_20260615_233438.jpg" alt="Lacunopsis sp" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Lacunopsis sp</i></div>
+                <div class="card-common">L. sp</div>
+                <div class="card-number">Accession № PCY101</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ciying Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-15</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="PCY101.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY101" data-scientific="tchangmargarya yangtsunghaiensis" data-common="t. yangtsunghaiensis" data-location="yiliang county, kunming city, yunnan province, china" data-iucn="Extinct (EX)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/3b7e83bc8a63f6d3a0707c8b84c3537b_20260616_004729.jpg" alt="Tchangmargarya yangtsunghaiensis" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya yangtsunghaiensis</i></div>
+                <div class="card-common">T. yangtsunghaiensis</div>
+                <div class="card-number">Accession № TCY101</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yiliang County, Kunming City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2023-3-19</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-Extinct(EX)">Extinct (EX)</span>
+                    <a href="TCY101.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY102" data-scientific="tchangmargarya cuan" data-common="t. cuan" data-location="zhongshu town, luliang county, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/44e22aebb4216bb92baffbfc479aa409.jpg" alt="Tchangmargarya cuan" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya cuan</i></div>
+                <div class="card-common">T. cuan</div>
+                <div class="card-number">Accession № TCY102</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Zhongshu Town, Luliang County, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-3-22</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY102.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="DNL101" data-scientific="dalipaludina zhanglejiai" data-common="d. zhanglejiai" data-location="ninglang yi autonomous county, lijiang city, yunnan province, china" data-iucn="Data Deficient (DD)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/e063743d791adb06054e9f464bec1ecf.jpg" alt="Dalipaludina zhanglejiai" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Dalipaludina zhanglejiai</i></div>
+                <div class="card-common">D. zhanglejiai</div>
+                <div class="card-number">Accession № DNL101</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ninglang Yi Autonomous County, Lijiang City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-26</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-DataDeficient(DD)">Data Deficient (DD)</span>
+                    <a href="DNL101.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY103" data-scientific="tchangmargarya sp" data-common="t. sp" data-location="ciying town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/7f82452ec1a5eaa4344189bb3d1ee69d.jpg" alt="Tchangmargarya sp" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya sp</i></div>
+                <div class="card-common">T. sp</div>
+                <div class="card-number">Accession № TCY103</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ciying Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY103.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY104" data-scientific="tchangmargarya chutsingensis" data-common="t. chutsingensis" data-location="ciying town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/7cf04912b043a243a5a5614582506953_20260616_171509.jpg" alt="Tchangmargarya chutsingensis" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya chutsingensis</i></div>
+                <div class="card-common">T. chutsingensis</div>
+                <div class="card-number">Accession № TCY104</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ciying Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-12</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY104.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY105" data-scientific="tchangmargarya zhangxianmingi" data-common="t. zhangxianmingi" data-location="yuezhou town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/31e596565f58f9f428db68b5f57180c6_20260617_013149.png" alt="Tchangmargarya zhangxianmingi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya zhangxianmingi</i></div>
+                <div class="card-common">T. zhangxianmingi</div>
+                <div class="card-number">Accession № TCY105</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY105.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY106" data-scientific="tchangmargarya yumi" data-common="t. yumi" data-location="yuezhou town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/6e69b53db6db8b5ecdf8be739c7108bd.jpg" alt="Tchangmargarya yumi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya yumi</i></div>
+                <div class="card-common">T. yumi</div>
+                <div class="card-number">Accession № TCY106</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY106.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY107" data-scientific="tchangmargarya tulotomoides" data-common="t. tulotomoides" data-location="ciying town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/5eef857bae659e5b766a24fbbc9f585e.jpg" alt="Tchangmargarya tulotomoides" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya tulotomoides</i></div>
+                <div class="card-common">T. tulotomoides</div>
+                <div class="card-number">Accession № TCY107</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ciying Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-8</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY107.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="DNL102" data-scientific="dalipaludina zhanglejiai" data-common="d. zhanglejiai" data-location="ninglang yi autonomous county, lijiang city, yunnan province, china" data-iucn="Data Deficient (DD)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/4773411a96b4a75f2ff7d858dc5a5bdb_20260618_021415.jpg" alt="Dalipaludina zhanglejiai" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Dalipaludina zhanglejiai</i></div>
+                <div class="card-common">D. zhanglejiai</div>
+                <div class="card-number">Accession № DNL102</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ninglang Yi Autonomous County, Lijiang City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-26</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-DataDeficient(DD)">Data Deficient (DD)</span>
+                    <a href="DNL102.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY108" data-scientific="tchangmargarya yangtsunghaiensis" data-common="t. yangtsunghaiensis" data-location="yiliang county, kunming city, yunnan province, china" data-iucn="Extinct (EX)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/d596d239880e8e6112c648f9aa1c41e3_20260618_021354.jpg" alt="Tchangmargarya yangtsunghaiensis" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya yangtsunghaiensis</i></div>
+                <div class="card-common">T. yangtsunghaiensis</div>
+                <div class="card-number">Accession № TCY108</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yiliang County, Kunming City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2023-3-19</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-Extinct(EX)">Extinct (EX)</span>
+                    <a href="TCY108.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="RLJ100" data-scientific="radix sp." data-common="r. sp." data-location="ninglang yi autonomous county, lijiang city, yunnan province, china" data-iucn="Data Deficient (DD)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/0c402558fd13087299f49d39d53a3ed9_20260618_021255.jpg" alt="Radix sp." class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Radix sp.</i></div>
+                <div class="card-common">R. sp.</div>
+                <div class="card-number">Accession № RLJ100</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ninglang Yi Autonomous County, Lijiang City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2025-5-23</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-DataDeficient(DD)">Data Deficient (DD)</span>
+                    <a href="RLJ100.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY109" data-scientific="tchangmargarya mohou" data-common="t. mohou" data-location="ciying town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/2f7877c4414c91785bcb6ddf175e9752_20260618_022340_20260618_022436_20260618_022518_20260618_022531_20260618_022813_20260618_022914_20260618_022924.jpg" alt="Tchangmargarya mohou" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya mohou</i></div>
+                <div class="card-common">T. mohou</div>
+                <div class="card-number">Accession № TCY109</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ciying Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY109.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY110" data-scientific="tchangmargarya zhangxianmingi" data-common="t. zhangxianmingi" data-location="yuezhou town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/4e69acbaec8e126970fb5a051642b729_20260619_150559.jpg" alt="Tchangmargarya zhangxianmingi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya zhangxianmingi</i></div>
+                <div class="card-common">T. zhangxianmingi</div>
+                <div class="card-number">Accession № TCY110</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY110.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="PCY102" data-scientific="paraprososthenia yunjian" data-common="p. yunjian" data-location="zhongshu town, luliang county, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/1f61a4ce68e045dac06d06e590cb3c24_20260619_151322.jpg" alt="Paraprososthenia yunjian" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Paraprososthenia yunjian</i></div>
+                <div class="card-common">P. yunjian</div>
+                <div class="card-number">Accession № PCY102</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Zhongshu Town, Luliang County, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-25</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="PCY102.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="PCY103" data-scientific="jullienia quan" data-common="j. quan" data-location="zhongshu town, luliang county, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/3f5315d01af7aea5f8ccb360f41909fd_20260619_182139.jpg" alt="Jullienia quan" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Jullienia quan</i></div>
+                <div class="card-common">J. quan</div>
+                <div class="card-number">Accession № PCY103</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Zhongshu Town, Luliang County, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-25</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="PCY103.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY111" data-scientific="tchangmargarya zhangxianmingi" data-common="t. zhangxianmingi" data-location="yuezhou town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/adfd0b4abfef04eba818d955efd691f2_20260619_182318_20260619_182339_20260619_182345.jpg" alt="Tchangmargarya zhangxianmingi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya zhangxianmingi</i></div>
+                <div class="card-common">T. zhangxianmingi</div>
+                <div class="card-number">Accession № TCY111</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY111.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY112" data-scientific="tchangmargarya zhangxianmingi" data-common="t. zhangxianmingi" data-location="yuezhou town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/473497e01260b460e33c95a3b6e8db05_20260619_182644.jpg" alt="Tchangmargarya zhangxianmingi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya zhangxianmingi</i></div>
+                <div class="card-common">T. zhangxianmingi</div>
+                <div class="card-number">Accession № TCY112</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY112.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY114" data-scientific="tchangmargarya zhangxianmingi" data-common="t. zhangxianmingi" data-location="yuezhou town, qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/ec29d6f228637d7b6094d4e6134ef122_20260622_034518_20260622_034535.jpg" alt="Tchangmargarya zhangxianmingi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya zhangxianmingi</i></div>
+                <div class="card-common">T. zhangxianmingi</div>
+                <div class="card-number">Accession № TCY114</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-6-11</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY114.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="PCY104" data-scientific="paraprososthenia yunjian" data-common="p. yunjian" data-location="zhongshu town, luliang county, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/7a1a0e75daf981ad12a3336b64da65ba_20260622_034630.jpg" alt="Paraprososthenia yunjian" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Paraprososthenia yunjian</i></div>
+                <div class="card-common">P. yunjian</div>
+                <div class="card-number">Accession № PCY104</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Zhongshu Town, Luliang County, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-25</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="PCY104.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="PCY105" data-scientific="jullienia chengyuangongi" data-common="j. chengyuangongi" data-location="zhongshu town, luliang county, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/7dc6cd17cff77c17e4c564cef415fc7e_20260622_034917_20260622_034936.jpg" alt="Jullienia chengyuangongi" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Jullienia chengyuangongi</i></div>
+                <div class="card-common">J. chengyuangongi</div>
+                <div class="card-number">Accession № PCY105</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Zhongshu Town, Luliang County, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-25</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="PCY105.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="RLJ101" data-scientific="gyraulus luguhuensis" data-common="g. luguhuensis" data-location="ninglang yi autonomous county, lijiang city, yunnan province, china" data-iucn="Data Deficient (DD)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/d4dfa4dc4de664eb673ad4f02e89513a_20260622_035716.jpg" alt="Gyraulus luguhuensis" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Gyraulus luguhuensis</i></div>
+                <div class="card-common">G. luguhuensis</div>
+                <div class="card-number">Accession № RLJ101</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ninglang Yi Autonomous County, Lijiang City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2025-5-23</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-DataDeficient(DD)">Data Deficient (DD)</span>
+                    <a href="RLJ101.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="DNL103" data-scientific="dalipaludina zhanglejiai" data-common="d. zhanglejiai" data-location="ninglang yi autonomous county, lijiang city, yunnan province, china" data-iucn="Data Deficient (DD)" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/36ebd3fa672f00a4a9156f73449d876a_20260622_035908.jpg" alt="Dalipaludina zhanglejiai" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Dalipaludina zhanglejiai</i></div>
+                <div class="card-common">D. zhanglejiai</div>
+                <div class="card-number">Accession № DNL103</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Ninglang Yi Autonomous County, Lijiang City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-26</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-DataDeficient(DD)">Data Deficient (DD)</span>
+                    <a href="DNL103.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY115" data-scientific="tchangmargarya cuan" data-common="t. cuan" data-location="zhongshu town, luliang county, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/b1e961faea0a8bec06c95f7f66cd0fce_20260622_040131.jpg" alt="Tchangmargarya cuan" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya cuan</i></div>
+                <div class="card-common">T. cuan</div>
+                <div class="card-number">Accession № TCY115</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Zhongshu Town, Luliang County, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-19</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY115.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY116" data-scientific="tchangmargarya laojin" data-common="t. laojin" data-location="qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/fb551046493462bfa340d7d99ce283db_20260622_040519.jpg" alt="Tchangmargarya laojin" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya laojin</i></div>
+                <div class="card-common">T. laojin</div>
+                <div class="card-number">Accession № TCY116</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-5-4</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY116.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" data-id="TCY117" data-scientific="tchangmargarya luyizhii" data-common="t. luyizhii" data-location="qilin district, qujing city, yunnan province, china" data-iucn="None" data-hasimage="true" data-page="0">
+            <div class="card-image-wrapper">
+                <img data-src="images/53116d2623ce7a4c86729cab3aee5c61_20260622_040659.jpg" alt="Tchangmargarya luyizhii" class="card-img" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.card-img-placeholder').style.display='flex'">
+                <div class="card-img-placeholder" style="display:none">
+                    <span class="placeholder-icon">⚜️</span>
+                    <span class="placeholder-text">No Image Available</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-title"><i>Tchangmargarya luyizhii</i></div>
+                <div class="card-common">T. luyizhii</div>
+                <div class="card-number">Accession № TCY117</div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📍</span>
+                    <span class="card-info-text">Qilin District, Qujing City, Yunnan Province, China</span>
+                </div>
+                <div class="card-info-row">
+                    <span class="card-info-icon">📅</span>
+                    <span class="card-info-text">2026-4-18</span>
+                </div>
+                <div class="card-footer">
+                    <span class="iucn-tag iucn-None">None</span>
+                    <a href="TCY117.html" class="btn">✧ View Details ✧</a>
+                </div>
+            </div>
+        </div>
+        
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p style="margin-top: 12px;">Loading more specimens...</p>
+            </div>
+            <div class="no-results" id="noResults">
+                <span>🔎</span>
+                No specimens match your search criteria.
+            </div>
+        </div>
+        
+        <!-- 分页控件 -->
+        <div class="pagination-section" id="paginationSection">
+            <button class="page-btn" id="prevPage" data-action="prev">◀ Prev</button>
+            <div id="pageNumbers"></div>
+            <button class="page-btn" id="nextPage" data-action="next">Next ▶</button>
+            <span class="page-info" id="pageInfo">Page 1 of 5</span>
+        </div>
+        
+        <div class="stats" id="statsFooter">
+            📜 Displaying <span id="visibleCount">27</span> specimen records
+        </div>
+        <div class="ornament-divider">❧ ❧ ❧</div>
+    </div>
+    
+    <script>
+        (function() {
+            // ============ 配置 ============
+            const PAGE_SIZE = 6;
+            // ==============================
+            
+            const searchInput = document.getElementById('searchInput');
+            const clearBtn = document.getElementById('clearBtn');
+            const filterBtns = document.querySelectorAll('.filter-btn:not(.reset-btn)');
+            const resetBtn = document.getElementById('resetFilters');
+            const cards = document.querySelectorAll('.grid .card');
+            const noResults = document.getElementById('noResults');
+            const visibleCount = document.getElementById('visibleCount');
+            const filterCount = document.getElementById('filterCount');
+            const statsFooter = document.getElementById('statsFooter');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageNumbers = document.getElementById('pageNumbers');
+            const pageInfo = document.getElementById('pageInfo');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            let currentFilter = 'all';
+            let currentSearch = '';
+            let currentPage = 1;
+            let filteredCards = [];  // 当前筛选后的卡片列表
+            let totalFiltered = 0;
+            let totalPages = 1;
+            
+function lazyLoadImages() {
+    const visibleCards = document.querySelectorAll('.grid .card:not(.hidden)');
+    visibleCards.forEach(card => {
+        const img = card.querySelector('.card-img');
+        if (img && img.dataset.src && !img.dataset.loaded) {
+            img.src = img.dataset.src;
+            img.onload = function() {
+                this.classList.add('loaded');
+                this.dataset.loaded = 'true';
+                const placeholder = this.parentElement.querySelector('.card-img-placeholder');
+                if (placeholder) placeholder.style.display = 'none';
+            };
+            img.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = this.parentElement.querySelector('.card-img-placeholder');
+                if (placeholder) placeholder.style.display = 'flex';
+            };
+        }
+    });
+}
+            
+            // ============ 渲染分页 ============
+            function renderPagination() {
+                const pageBtns = pageNumbers.querySelectorAll('.page-btn-num');
+                pageBtns.forEach(btn => btn.remove());
+                
+                if (totalPages <= 1) {
+                    prevBtn.classList.add('disabled');
+                    nextBtn.classList.add('disabled');
+                    pageInfo.textContent = `Page 1 of 1`;
+                    return;
+                }
+                
+                // 生成页码按钮（最多显示7个）
+                let startPage = Math.max(1, currentPage - 3);
+                let endPage = Math.min(totalPages, currentPage + 3);
+                
+                if (endPage - startPage < 6) {
+                    if (startPage === 1) {
+                        endPage = Math.min(totalPages, startPage + 6);
+                    } else if (endPage === totalPages) {
+                        startPage = Math.max(1, endPage - 6);
+                    }
+                }
+                
+                if (startPage > 1) {
+                    const firstBtn = document.createElement('button');
+                    firstBtn.className = 'page-btn page-btn-num';
+                    firstBtn.textContent = '1';
+                    firstBtn.dataset.page = '1';
+                    pageNumbers.appendChild(firstBtn);
+                    if (startPage > 2) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'page-info';
+                        ellipsis.textContent = '…';
+                        pageNumbers.appendChild(ellipsis);
+                    }
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = 'page-btn page-btn-num' + (i === currentPage ? ' active' : '');
+                    btn.textContent = i;
+                    btn.dataset.page = i;
+                    pageNumbers.appendChild(btn);
+                }
+                
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'page-info';
+                        ellipsis.textContent = '…';
+                        pageNumbers.appendChild(ellipsis);
+                    }
+                    const lastBtn = document.createElement('button');
+                    lastBtn.className = 'page-btn page-btn-num';
+                    lastBtn.textContent = totalPages;
+                    lastBtn.dataset.page = totalPages;
+                    pageNumbers.appendChild(lastBtn);
+                }
+                
+                // 绑定页码点击事件
+                document.querySelectorAll('.page-btn-num').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const page = parseInt(this.dataset.page);
+                        if (page !== currentPage) {
+                            goToPage(page);
+                        }
+                    });
+                });
+                
+                // 更新前后按钮状态
+                prevBtn.classList.toggle('disabled', currentPage <= 1);
+                nextBtn.classList.toggle('disabled', currentPage >= totalPages);
+                pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            }
+            
+            // ============ 跳转到指定页 ============
+            function goToPage(page) {
+                if (page < 1 || page > totalPages) return;
+                currentPage = page;
+                renderPage();
+                renderPagination();
+                // 滚动到网格顶部
+                document.getElementById('cardGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // ============ 渲染当前页 ============
+function renderPage() {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end = Math.min(start + PAGE_SIZE, filteredCards.length);
+    
+    // 先隐藏所有卡片
+    cards.forEach(card => {
+        card.classList.remove('visible');
+        card.classList.add('hidden');
+    });
+    
+    // 显示当前页的卡片
+    for (let i = start; i < end; i++) {
+        const card = filteredCards[i];
+        if (card) {
+            card.classList.remove('hidden');
+            card.classList.add('visible');
+        }
+    }
+    
+    // 更新计数
+    const totalVisible = filteredCards.length;
+    visibleCount.textContent = totalVisible;
+    filterCount.textContent = `Showing ${totalVisible} specimens`;
+    
+    // 显示/隐藏无结果
+    if (totalVisible === 0) {
+        noResults.classList.add('visible');
+        loadingSpinner.classList.remove('visible');
+    } else {
+        noResults.classList.remove('visible');
+    }
+    
+    // 更新总页数
+    totalPages = Math.max(1, Math.ceil(totalVisible / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    
+    // 强制显示所有图片
+    // 强制显示所有图片
+    document.querySelectorAll('.grid .card:not(.hidden) .card-img').forEach(img => {
+        if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+            img.dataset.loaded = 'true';
+            const placeholder = img.parentElement.querySelector('.card-img-placeholder');
+            if (placeholder) placeholder.style.display = 'none';
+        }
+    });
+}
+            
+            // ============ 应用筛选（重新计算所有卡片） ============
+            function applyFilters() {
+                const searchLower = currentSearch;
+                const filter = currentFilter;
+                
+                filteredCards = [];
+                cards.forEach(card => {
+                    const scientific = (card.dataset.scientific || '').toLowerCase();
+                    const common = (card.dataset.common || '').toLowerCase();
+                    const location = (card.dataset.location || '').toLowerCase();
+                    const id = (card.dataset.id || '').toLowerCase();
+                    const iucn = card.dataset.iucn || '';
+                    
+                    let matchesSearch = true;
+                    if (searchLower) {
+                        matchesSearch = scientific.includes(searchLower) ||
+                                       common.includes(searchLower) ||
+                                       location.includes(searchLower) ||
+                                       id.includes(searchLower);
+                    }
+                    
+                    let matchesFilter = true;
+                    if (filter !== 'all') {
+                        matchesFilter = iucn === filter;
+                    }
+                    
+                    if (matchesSearch && matchesFilter) {
+                        filteredCards.push(card);
+                    }
+                });
+                
+                // 重置到第一页
+                currentPage = 1;
+                totalPages = Math.max(1, Math.ceil(filteredCards.length / PAGE_SIZE));
+                renderPage();
+                renderPagination();
+            }
+            applyFilters();
+
+            searchInput.addEventListener('input', function() {
+                const hasText = this.value.trim().length > 0;
+                clearBtn.classList.toggle('visible', hasText);
+                currentSearch = this.value.trim().toLowerCase();
+                applyFilters();
+            });
+            
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                clearBtn.classList.remove('visible');
+                currentSearch = '';
+                applyFilters();
+                searchInput.focus();
+            });
+            
+            // 筛选按钮点击
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    applyFilters();
+                });
+            });
+            
+            // 重置按钮
+            resetBtn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active');
+                currentFilter = 'all';
+                searchInput.value = '';
+                clearBtn.classList.remove('visible');
+                currentSearch = '';
+                applyFilters();
+                searchInput.focus();
+            });
+            
+            // 上一页/下一页
+            prevBtn.addEventListener('click', function() {
+                if (!this.classList.contains('disabled')) {
+                    goToPage(currentPage - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (!this.classList.contains('disabled')) {
+                    goToPage(currentPage + 1);
+                }
+            });
+            
+            // 键盘快捷键：ESC清空搜索
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    clearBtn.click();
+                }
+            });
+            
+            // ============ Intersection Observer 懒加载（滚动时加载可见图片） ============
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver(function(entries) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src && !img.dataset.loaded) {
+                                img.src = img.dataset.src;
+                                img.onload = function() {
+                                    this.classList.add('loaded');
+                                    this.dataset.loaded = 'true';
+                                    const placeholder = this.parentElement.querySelector('.card-img-placeholder');
+                                    if (placeholder) placeholder.style.display = 'none';
+                                };
+                                img.onerror = function() {
+                                    this.style.display = 'none';
+                                    const placeholder = this.parentElement.querySelector('.card-img-placeholder');
+                                    if (placeholder) placeholder.style.display = 'flex';
+                                };
+                                imageObserver.unobserve(img);
+                            }
+                        }
+                    });
+                }, {
+                    rootMargin: '200px 0px'  // 提前200px开始加载
+                });
+                
+                // 观察所有图片
+                document.querySelectorAll('.card-img').forEach(img => {
+                    if (img.dataset.src) {
+                        imageObserver.observe(img);
+                    }
+                });
+                
+                // 保存observer以便后续新出现的卡片使用
+                window.__imageObserver = imageObserver;
+            }
+            
+            // ============ 初始化 ============
+            // 初始筛选所有卡片
+            applyFilters();
+            
+            // 初始加载可见图片
+            setTimeout(lazyLoadImages, 300);
+            
+            // 监听窗口变化，重新加载可见图片（如resize后）
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(lazyLoadImages, 200);
+            });
+            
+        })();
+    </script>
+</body>
+</html>

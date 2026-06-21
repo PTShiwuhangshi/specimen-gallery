@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tchangmargarya zhangxianmingi - My Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', 'Palatino', serif;
+            background: #3a2e28;
+            background-image: 
+                linear-gradient(45deg, #2a201a 2%, #3a2e28 2%, #3a2e28 50%, #2a201a 50%, #2a201a 52%, #3a2e28 52%, #3a2e28 100%);
+            background-size: 60px 60px;
+            padding: 40px 20px;
+            min-height: 100vh;
+            opacity: 0;
+            animation: pageFadeIn 0.8s ease-out forwards;
+        }
+        
+        /* 页面淡入动画 */
+        @keyframes pageFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 主容器 - 羊皮纸效果，增加浮现动画 */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #f4e8d1;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(200,180,140,0.1) 0px, rgba(200,180,140,0.1) 2px, transparent 2px, transparent 8px);
+            border-radius: 4px;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.3),
+                inset 0 0 0 1px rgba(255,255,200,0.3),
+                inset 0 0 0 8px #8b7355,
+                inset 0 0 0 10px #d4c5a9;
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.98);
+            animation: containerRise 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) 0.15s forwards;
+            opacity: 0;
+        }
+        
+        @keyframes containerRise {
+            0% {
+                opacity: 0;
+                transform: scale(0.96) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        /* 装饰性角落花纹 */
+        .container::before {
+            content: "✧";
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 24px;
+            color: #8b7355;
+            opacity: 0.5;
+            font-family: serif;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .container:hover::before {
+            transform: rotate(15deg) scale(1.1);
+            opacity: 0.8;
+        }
+        
+        .container::after {
+            content: "✧";
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #8b7355;
+            opacity: 0.5;
+            font-family: serif;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .container:hover::after {
+            transform: rotate(-15deg) scale(1.1);
+            opacity: 0.8;
+        }
+        
+        /* 页眉区域 */
+        .header {
+            background: linear-gradient(135deg, #2a2418 0%, #3d3527 50%, #2a2418 100%);
+            color: #e8dcc8;
+            padding: 35px 30px 25px;
+            text-align: center;
+            border-bottom: 3px solid #c4a66a;
+            position: relative;
+            animation: headerSlideDown 0.5s ease-out 0.3s backwards;
+        }
+        
+        @keyframes headerSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header::before {
+            content: "⚜";
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            font-size: 28px;
+            color: #c4a66a;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        
+        .header:hover::before {
+            transform: rotate(20deg) scale(1.2);
+            opacity: 1;
+        }
+        
+        .header::after {
+            content: "⚜";
+            position: absolute;
+            top: 10px;
+            right: 30px;
+            font-size: 28px;
+            color: #c4a66a;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        
+        .header:hover::after {
+            transform: rotate(-20deg) scale(1.2);
+            opacity: 1;
+        }
+        
+        .museum-badge {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: rgba(196,166,106,0.2);
+            padding: 4px 15px;
+            border-radius: 30px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+        
+        .museum-badge:hover {
+            background: rgba(196,166,106,0.4);
+            letter-spacing: 4px;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            font-style: italic;
+            font-weight: normal;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+            font-family: 'Georgia', serif;
+            transition: text-shadow 0.3s ease;
+        }
+        
+        .header h1:hover {
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.5);
+        }
+        
+        .header .subtitle {
+            font-size: 18px;
+            font-style: italic;
+            color: #c4a66a;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+        
+        .header .subtitle:hover {
+            color: #e0c78c;
+        }
+        
+        .specimen-id {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+        
+        .specimen-id:hover {
+            background: rgba(0,0,0,0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* 内容区域 */
+        .content {
+            padding: 35px 35px 40px;
+        }
+        
+        /* 信息网格 - 古典边框风格 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+        
+        .info-section {
+            background: rgba(235,220,190,0.5);
+            border: 1px solid #c4a66a;
+            padding: 20px;
+            border-radius: 2px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            opacity: 0;
+            transform: translateX(-12px);
+            animation: sectionFadeIn 0.5s ease-out forwards;
+        }
+        
+        .info-section:nth-child(2) {
+            animation-delay: 0.1s;
+            transform: translateX(12px);
+        }
+        
+        @keyframes sectionFadeIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .info-section:hover {
+            background: rgba(235,220,190,0.8);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            border-color: #b8935a;
+        }
+        
+        .section-title {
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #5c3d2e;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #c4a66a;
+            display: inline-block;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        
+        .info-section:hover .section-title {
+            letter-spacing: 3px;
+            border-bottom-color: #a67c42;
+        }
+        
+        .info-row {
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px dotted rgba(196,166,106,0.3);
+            padding-bottom: 8px;
+            transition: background 0.2s ease, padding-left 0.2s;
+        }
+        
+        .info-row:hover {
+            background: rgba(196,166,106,0.1);
+            padding-left: 8px;
+            border-bottom-color: rgba(196,166,106,0.7);
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #5c3d2e;
+            width: 110px;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #2a2418;
+            font-size: 14px;
+            font-family: 'Georgia', serif;
+        }
+        
+        /* 标签云效果 */
+        .info-value i {
+            color: #6b4c3b;
+            font-style: italic;
+        }
+        
+        /* IUCN徽章 - 复古风格 */
+        .iucn-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(0,0,0,0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+        
+        .iucn-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .iucn-CR { background: #8b3a3a; color: #f4e8d1; }
+        .iucn-EN { background: #b8652e; color: #f4e8d1; }
+        .iucn-VU { background: #c9a03d; color: #2a2418; }
+        .iucn-NT { background: #7a6b5d; color: #f4e8d1; }
+        .iucn-LC { background: #4a6b3a; color: #f4e8d1; }
+        .iucn-DD { background: #5a6b7a; color: #f4e8d1; }
+        
+        /* 图片区域 - 复古相框风格，加入动画 */
+        .images-container {
+            margin: 35px 0;
+        }
+        
+        .image-title {
+            font-family: 'Georgia', serif;
+            font-size: 14px;
+            letter-spacing: 3px;
+            color: #5c3d2e;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            animation: titleGlow 2s infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 0 0 0px rgba(196,166,106,0);
+                letter-spacing: 3px;
+            }
+            100% {
+                text-shadow: 0 0 3px rgba(196,166,106,0.5);
+                letter-spacing: 4px;
+            }
+        }
+        
+        .image-title::before {
+            content: "◈ ";
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        
+        .image-title::after {
+            content: " ◈";
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        
+        .image-title:hover::before,
+        .image-title:hover::after {
+            opacity: 1;
+        }
+        
+        .dual-images {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .image-item {
+            flex: 1;
+            min-width: 280px;
+            background: #e8dcc8;
+            padding: 12px;
+            border: 8px solid #d4c5a9;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            opacity: 0;
+            transform: scale(0.92);
+            animation: imageRise 0.6s ease-out forwards;
+        }
+        
+        .image-item:first-child {
+            animation-delay: 0.2s;
+        }
+        
+        .image-item:last-child {
+            animation-delay: 0.3s;
+        }
+        
+        @keyframes imageRise {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .image-item::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 1px solid #c4a66a;
+            pointer-events: none;
+            transition: border-color 0.3s;
+        }
+        
+        .image-item:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            border-color: #b8935a;
+        }
+        
+        .image-item:hover::before {
+            border-color: #a67c42;
+        }
+        
+        .image-item img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+            filter: sepia(0.2);
+            transition: filter 0.4s ease, transform 0.3s;
+            object-fit: contain;
+    width: 100%;
+}
+        
+        .image-item:hover img {
+            filter: sepia(0);
+            transform: scale(1.01);
+        }
+        
+        .image-caption {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 11px;
+            color: #6b5a4a;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            transition: letter-spacing 0.2s;
+        }
+        
+        .image-item:hover .image-caption {
+            letter-spacing: 2px;
+            color: #5c3d2e;
+        }
+        
+        /* 描述区域 - 手稿风格，增加动画 */
+        .description {
+            background: rgba(235,220,190,0.4);
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid #c4a66a;
+            font-style: italic;
+            line-height: 1.8;
+            color: #3a2e28;
+            font-size: 15px;
+            position: relative;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: descFadeUp 0.6s ease-out 0.25s forwards;
+        }
+        
+        @keyframes descFadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .description:hover {
+            background: rgba(235,220,190,0.7);
+            border-left-width: 6px;
+            padding-left: 28px;
+        }
+        
+        .description::first-letter {
+            font-size: 48px;
+            font-weight: bold;
+            color: #c4a66a;
+            float: left;
+            line-height: 1;
+            margin-right: 10px;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s;
+        }
+        
+        .description:hover::first-letter {
+            font-size: 56px;
+            color: #b8884a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        /* 返回按钮 - 复古风格，增加脉冲动画 */
+        .back-btn-container {
+            text-align: center;
+            margin: 30px 0 15px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background: transparent;
+            color: #5c3d2e;
+            text-decoration: none;
+            border: 2px solid #c4a66a;
+            border-radius: 40px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: gentlePulse 2s infinite ease-in-out;
+        }
+        
+        @keyframes gentlePulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(196,166,106,0.3);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(196,166,106,0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(196,166,106,0);
+            }
+        }
+        
+        .back-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #c4a66a;
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+        
+        .back-btn:hover {
+            color: #f4e8d1;
+            border-color: #c4a66a;
+            transform: translateY(-3px);
+            letter-spacing: 3px;
+            animation: none;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+        }
+        
+        .back-btn:hover::before {
+            left: 0;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: #2a2418;
+            color: #8b7a64;
+            padding: 20px;
+            text-align: center;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            border-top: 1px solid #c4a66a;
+            transition: background 0.3s;
+            animation: footerSlide 0.5s ease-out 0.4s backwards;
+        }
+        
+        @keyframes footerSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .footer:hover {
+            background: #322a1f;
+            letter-spacing: 2.5px;
+        }
+        
+        /* 装饰性分割线 */
+        .ornament-divider {
+            text-align: center;
+            margin: 20px 0;
+            color: #c4a66a;
+            font-size: 14px;
+            letter-spacing: 5px;
+            transition: all 0.3s;
+            animation: dividerFade 0.8s ease-out;
+        }
+        
+        @keyframes dividerFade {
+            from {
+                opacity: 0;
+                transform: scaleX(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+        
+        .ornament-divider:hover {
+            letter-spacing: 8px;
+            color: #b8884a;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 800px) {
+            body {
+                padding: 20px 15px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .info-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .info-row {
+                flex-direction: column;
+            }
+            
+            .dual-images {
+                flex-direction: column;
+            }
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                animation: none;
+                opacity: 1;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+            
+            .back-btn {
+                display: none;
+            }
+            
+            .info-section, .image-item, .description {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+            
+            .ornament-divider {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="museum-badge">✦ Online Label Database ✦</div>
+            <h1><i>Tchangmargarya zhangxianmingi</i></h1>
+            <div class="subtitle">T. zhangxianmingi</div>
+            <div class="specimen-id">Accession № TCY112</div>
+        </div>
+        
+        <div class="content">
+            <div class="info-grid">
+                <!-- 左侧：标本信息 -->
+                <div class="info-section">
+                    <div class="section-title">📜 Specimen Data</div>
+                    <div class="info-row">
+                        <div class="info-label">Layer:</div>
+                        <div class="info-value">Cíyíng Fm</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Sample Age:</div>
+                        <div class="info-value">N2</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Scale:</div>
+                        <div class="info-value">36-25-12 (mm)</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Sur-rock:</div>
+                        <div class="info-value">Brown Clay</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Locality:</div>
+                        <div class="info-value">Yuezhou Town, Qilin District, Qujing City, Yunnan Province, China</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Date Collected:</div>
+                        <div class="info-value">2026-6-11</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Collected by:</div>
+                        <div class="info-value">OpenShell</div>
+                    </div>
+                </div>
+                
+                <!-- 右侧：分类学信息 -->
+                <div class="info-section">
+                    <div class="section-title">🔬 Taxonomy</div>
+                    <div class="info-row">
+                        <div class="info-label">Kingdom:</div>
+                        <div class="info-value"><i>Animalia</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Phylum:</div>
+                        <div class="info-value"><i>Mollusca</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Class:</div>
+                        <div class="info-value"><i>Gastropoda-Prosobranchia</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Order:</div>
+                        <div class="info-value"><i>Mesogastropoda</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Family:</div>
+                        <div class="info-value"><i>Viviparidae</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Genus:</div>
+                        <div class="info-value"><i>Tchangmargarya</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Species:</div>
+                        <div class="info-value"><i>Zhangxianmingi</i></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">IUCN Status:</div>
+                        <div class="info-value">
+                            <span class="iucn-badge iucn-Not specified">Not specified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ornament-divider">❧ ❧ ❧</div>
+            
+            <!-- 图片区域 -->
+            <div class="images-container" id="imagesContainer"></div>
+            
+            <div class="ornament-divider">✻ ✻ ✻</div>
+            
+            <!-- 描述区域 -->
+            <div class="description">
+                <strong>Notes & Observations</strong><br>
+                Not specified
+            </div>
+            
+            <div class="back-btn-container">
+                <a href="index.html" class="back-btn">⌘ Return to Collection ⌘</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            DATABASE OF OPENSHELL · DIGITAL COLLECTION<br>
+            QR Code Accession System · Established 2026
+        </div>
+    </div>
+    
+    <script>
+        // 图片处理 (无任何内容改动，纯保留逻辑，确保占位符功能与动画不冲突)
+        const img1 = "473497e01260b460e33c95a3b6e8db05_20260619_182644.jpg";
+        const img2 = "5eb6e58558c26bf9e1b1b2e414fe5a84_20260619_182717.jpg";
+        const container = document.getElementById('imagesContainer');
+        const hasImg1 = img1 && img1.trim() !== '';
+        const hasImg2 = img2 && img2.trim() !== '';
+        
+        if (hasImg1 || hasImg2) {
+            let html = '<div class="image-title">PHOTOGRAPHIC PLATES</div><div class="dual-images">';
+            if (hasImg1) {
+                html += `
+                    <div class="image-item">
+                        <img src="images/${img1}" alt="Specimen photograph 1" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image+Available'">
+                        <div class="image-caption">Fig. 1 — Whole Specimen</div>
+                    </div>
+                `;
+            }
+            if (hasImg2) {
+                html += `
+                    <div class="image-item">
+                        <img src="images/${img2}" alt="Specimen photograph 2" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image+Available'">
+                        <div class="image-caption">Fig. 2 — Detail View</div>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = '<div style="text-align:center; padding:60px; color:#8b7a64; font-style:italic;">No photographic records available</div>';
+        }
+    </script>
+</body>
+</html>
